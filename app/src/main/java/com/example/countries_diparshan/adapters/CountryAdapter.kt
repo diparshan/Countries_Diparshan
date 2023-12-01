@@ -22,17 +22,14 @@ class CountryAdapter (
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.country_row_layout, parent, false)
         return UserViewHolder(view)
     }
 
-
     override fun getItemCount(): Int {
         return countryList.size
     }
-
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         // 1. Get the current country
