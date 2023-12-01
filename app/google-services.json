@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "221122819105",
+    "project_id": "countriesdiparshan",
+    "storage_bucket": "countriesdiparshan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221122819105:android:10f0915c4fee8ab6531f60",
+        "android_client_info": {
+          "package_name": "com.example.countries_diparshan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNUE6LGQNWOhTXdOlXWa-P-_Go6eK2pw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
