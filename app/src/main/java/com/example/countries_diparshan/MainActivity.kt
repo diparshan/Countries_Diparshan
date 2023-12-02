@@ -16,20 +16,18 @@ import com.example.countries_diparshan.api.RetrofitInstance
 import com.example.countries_diparshan.databinding.ActivityMainBinding
 import com.example.countries_diparshan.models.Country
 import com.example.countries_diparshan.models.Name
+import com.example.countries_diparshan.repositories.FavouritesRepository
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private val TAG = this.toString();
     lateinit var adapter: CountryAdapter
-
-    var name1: Name = Name("Nepal", "hari")
-    var name2: Name = Name("India", "hari")
-    var datasource: MutableList<Country> = mutableListOf<Country>(
-        Country(name1),
-        Country(name2),
-    )
+    lateinit var favouritesRepository: FavouritesRepository
+    var datasource: MutableList<Country> = mutableListOf<Country>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +38,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(this.binding.menuToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        adapter = CountryAdapter(datasource,{pos -> rowClicked(pos) })
+
+//        FirebaseApp.initializeApp(this)
+        favouritesRepository = FavouritesRepository(applicationContext)
+
+
+
+//        this.adapter = CountryAdapter(datasource) { item, position ->  FavouritesRepository.addCountryToDB(item) }
+        adapter = CountryAdapter(datasource, { pos -> onButtonClicked(pos) })
         // recyclerView
         binding.rvItems.adapter = adapter
         binding.rvItems.layoutManager = LinearLayoutManager(this)
@@ -50,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                 LinearLayoutManager.VERTICAL
             )
         )
+
+
     }
 
     init {
@@ -58,15 +65,6 @@ class MainActivity : AppCompatActivity() {
 
                 val countryList: List<Country> = api.getAllCountries()
 
-                //output it to the UI
-//                var output:String = ""
-//                for (country in countryList) {
-//                    output += "${country.name.common} \n"
-//                }
-//
-//                Log.d("TAG", countryList.toString())
-
-//            binding.tvResults.setText(output)
                 datasource.clear()
                 datasource.addAll(countryList)
                 adapter.notifyDataSetChanged()
@@ -74,9 +72,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // click handler for the row
-    fun rowClicked(position:Int) {
-        val snackbar = Snackbar.make(binding.root, "Clicked on ${position}", Snackbar.LENGTH_LONG)
-        snackbar.show()
+    fun onButtonClicked(position:Int) {
+        var countryToAdd :Country= datasource.get(position)
+
+        favouritesRepository.addCountryToDB(countryToAdd)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
